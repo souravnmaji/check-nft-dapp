@@ -1,0 +1,162 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+/* Change the values in here to match your branding */
+:root {
+  /* Background color of the page */
+  --background-color: #1c1e21;
+
+  /* Color of the text/words */
+  --text-color: #fff;
+
+  /* Main color of your brand */
+  --color-primary: #f213a4;
+
+  /* Secondary color of your brand */
+  --color-secondary: #418dff;
+
+  /* Which font you want to use */
+  --font: "Inter", sans-serif;
+
+  /* Color of the border around items */
+  --border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* --- Don't need to modify below here --- */
+
+/* Default design values of the entire document */
+
+body {
+  background: var(--background-color);
+  font-family: var(--font);
+  color: var(--text-color);
+  margin: 0;
+  width:100%;
+  min-height:100vh;
+  text-align: center;
+  scroll-behavior: smooth;
+}
+
+section_bg {
+    position: fixed;
+    animation: bgAnim 60s linear infinite;
+}
+@keyframes bgAnim {
+    0%,100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+}
+@media screen and (max-width: 747px) {
+section_bg {
+    position: fixed;
+    top: 0;
+    margin: 0;}
+}
+
+span.span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 3px;
+    height: 3px;
+    background: #fff;
+    border-radius: 50%;
+    opacity: 0.01;
+    box-shadow: 0 0 0 4px rgba(255,255,255,0.01), 0 0 0 8px rgba(255,255,255,0.01), 0 0 20px rgba(255,255,255,1);
+    animation: hujan 5s linear infinite;
+}
+span.span::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 300px;
+        height: 1px;
+        opacity: 0.5;
+        background: linear-gradient(90deg, #fff, transparent);
+    }
+@keyframes hujan {
+    0% {
+        transform: rotate(315deg) translateX(0);
+        opacity: 1;
+    }
+    70% {
+        opacity: 0.5;
+    }
+    100% {
+        transform: rotate(315deg) translateX(-1000px);
+        opacity: 0;
+    }
+}
+span.span:nth-child(1) {
+    top: -280px;
+    right: 0;
+    left: initial;
+    animation-delay: 6s;
+    animation-duration: 10s;
+}
+span.span:nth-child(2) {
+    top: 20px;
+    right: 500px;
+    left: initial;
+    animation-delay: 5.2s;
+    animation-duration: 8.3s;
+}
+span.span:nth-child(3) {
+    top: 12px;
+    right: 900px;
+    left: initial;
+    animation-delay: 10.4s;
+    animation-duration: 13.25s;
+}
+span.span:nth-child(4) {
+    top: 0px;
+    right: 10px;
+    left: initial;
+    animation-delay: 15.5s;
+    animation-duration: 5.25s;
+}
+
+
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.active {
+    background: rgba(255, 255, 255, 0.52);
+    border-radius: 6px;
+    color: #161c25 !important;
+    text-shadow: 0 0 20px rgb(0 0 0 / 50%);
+    text-decoration: none !important;
+    box-shadow: 0px 2px 3px rgb(0 0 0 / 7%), 0px 6px 6px rgb(0 0 0 / 4%), 0px 12px 12px rgb(0 0 0 / 3%), 0px 20px 24px rgb(0 0 0 / 3%), 0px 32px 40px rgb(0 0 0 / 2%), 0px 80px 100px rgb(0 0 0 / 16%), 0px 0px 4px rgb(0 0 0 / 8%), 0px 8px 48px rgb(0 0 0 / 8%);
+
+}
+
+.hover-3d {
+    width: -webkit-fill-available;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  border-radius: 8px;
+  height: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: $light; 
+  border-radius: 8px;
+}
+ 
+::-webkit-scrollbar-thumb {
+  background: $dark; 
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
