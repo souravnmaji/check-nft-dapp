@@ -5,4 +5,4 @@
 - Staking Nft.
 - Upload Nft.
 - Resell Nft.
-
+- member( edition)

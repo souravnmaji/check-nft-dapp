@@ -19,8 +19,7 @@ module.exports = withPWA({
  
     unoptimized : true,
 loader: 'akamai',
-path: '/',
-distDir: 'build',
+path: '/'
   },
 })
 

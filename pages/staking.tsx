@@ -5,6 +5,7 @@ import {
   useAddress,
   useTokenBalance,
   useOwnedNFTs,
+  useContractRead,
   useContract,
   useMetamask, useWalletConnect, useCoinbaseWallet,
 } from "@thirdweb-dev/react";
@@ -51,6 +52,7 @@ import LoginModal from "../components/Login";
 import Footer from "../components/Footer";
 import WarnPage from "../components/Warning";
 import css from "../styles/css.module.css";
+import Profile from "../components/Profile";
 
 const nftCollection = NFT_COLLECTION_ADDRESS;
 const tokenContractAddress = TOKEN_REWARD_ADDRESS;
@@ -80,6 +82,7 @@ const Stake: NextPage = () => {
   const connectWithCoinbaseWallet = useCoinbaseWallet();
 
   
+  
   const { contract: editionDrop } = useContract(
     MEMBERPASS_CONTRACT_ADDRESS,
     "edition-drop"
@@ -96,8 +99,11 @@ const Stake: NextPage = () => {
     "token"
   );
 
-  const { contract } = useContract(stakingContractAddress);
+  
 
+  const { contract } = useContract(stakingContractAddress);
+  
+  
   // Load Unstaked NFTs
   const { data: ownedNfts } = useOwnedNFTs(nftCollection, address);
 
@@ -106,6 +112,9 @@ const Stake: NextPage = () => {
 
   const [stakedNfts, setStakedNfts] = useState<any[]>([]);
   const [claimableRewards, setClaimableRewards] = useState<BigNumber>();
+
+  
+ 
 
   useEffect(() => {
     if (!contract) return;
@@ -174,12 +183,16 @@ const Stake: NextPage = () => {
 
   // 2. No NFTs - mint page
   if (memberNfts.length === 0 || networkMismatch) {
+    
     return (
 <>
         <MintMember />
 </>
     );
   }
+
+ 
+  
 
   async function stakeNft(id: string) {
     if (!address) return;
@@ -312,6 +325,8 @@ const Stake: NextPage = () => {
             }}>
             Claim Rewards 
           </Button>
+         
+       
         </Box>
       </Box>
     </Center>
@@ -384,11 +399,13 @@ const Stake: NextPage = () => {
   </TabPanels>
 </Tabs>
         </Box>
+       
       </SimpleGrid>
     </Container>
         </>
       )}
     </div>
+    <Profile />
       <Footer />
 </>
   );
