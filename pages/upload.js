@@ -187,7 +187,7 @@ const Upload = () => {
           onSuccess: (tx) => {
               alert({
                   title: 'Success.',
-                  description: "NFT berhasil di upload.",
+                  description: "NFT uploaded successfully.",
                   status: 'success',
                   duration: 5000,
                   isClosable: true,
@@ -199,7 +199,7 @@ const Upload = () => {
     } catch (error) {
       alert({
           title: 'Error.',
-          description: "NFT gagal di upload.",
+          description: "NFT haven't upload.",
           status: 'error',
           duration: 7000,
           isClosable: true,

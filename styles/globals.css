@@ -36,6 +36,8 @@ body {
   scroll-behavior: smooth;
 }
 
+
+
 section_bg {
     position: fixed;
     animation: bgAnim 60s linear infinite;

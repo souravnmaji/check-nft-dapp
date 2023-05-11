@@ -32,6 +32,15 @@ import {
   MenuDivider,
   useToast,
   Flex,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverAnchor,
   Tag,
   Spinner,
   Avatar,
@@ -53,6 +62,9 @@ import Footer from "../components/Footer";
 import WarnPage from "../components/Warning";
 import css from "../styles/css.module.css";
 import Profile from "../components/Profile";
+import Premium from "../components/Premium";
+import Gold from "../components/Gold";
+import PaidName from "../components/PaidName";
 
 const nftCollection = NFT_COLLECTION_ADDRESS;
 const tokenContractAddress = TOKEN_REWARD_ADDRESS;
@@ -71,6 +83,8 @@ const Stake: NextPage = () => {
   const address = useAddress();
   const router = useRouter();
 
+  
+
   const networkMismatch = useNetworkMismatch();
   const [, switchNetwork] = useNetwork();
   const color = useColorModeValue('gray.800', 'gray.300');
@@ -81,7 +95,20 @@ const Stake: NextPage = () => {
   const connectWithWalletConnect = useWalletConnect();
   const connectWithCoinbaseWallet = useCoinbaseWallet();
 
-  
+  const [levelNames, setLevelNames] = useState([]);
+  const [gameNames, setGameNames] = useState([]);
+  const [actorNames, setActorNames] = useState([]);
+  const [countryNames, setCountryNames] = useState([]);
+  const [defensiveNames, setDefensiveNames] = useState([]);
+  const [equipmentNames, setEquipmentNames] = useState([]);
+  const [shopNames, setShopNames] = useState([]);
+  const [singerNames, setSingerNames] = useState([]);
+  const [offensiveNames, setOffensiveNames] = useState([]);
+  const [ paidNames, setPaidNames ] = useState([]);
+
+
+
+
   
   const { contract: editionDrop } = useContract(
     MEMBERPASS_CONTRACT_ADDRESS,
@@ -100,10 +127,21 @@ const Stake: NextPage = () => {
   );
 
   
+  
 
   const { contract } = useContract(stakingContractAddress);
   
-  
+  const { data: levelData, isLoading: levelLoading } = useContractRead(contract, "getStakedLevelNames", address);
+  const { data: gameData, isLoading: gameLoading } = useContractRead(contract, "getStakedGameNames", address);
+  const { data: actorData, isLoading: actorLoading } = useContractRead(contract, "getStakedActorNames", address);
+  const { data: countryData, isLoading: countryLoading } = useContractRead(contract, "getStakedCountryNames", address);
+  const { data: defensiveData, isLoading: defensiveLoading } = useContractRead(contract, "getStakedDefensiveNames", address);
+  const { data: equipmentData, isLoading: equipmentLoading } = useContractRead(contract, "getStakedEquipmentNames", address);
+  const { data: offensiveData, isLoading: offensiveLoading } = useContractRead(contract, "getStakedOffensiveNames", address);
+  const { data: singerData, isLoading: singerLoading } = useContractRead(contract, "getStakedSingerNames", address);
+  const { data: shopData, isLoading: shopLoading } = useContractRead(contract, "getStakedShopNames", address);
+  const { data: paidData, isLoading: paidLoading } = useContractRead( contract, "getStakedPaidNames", address);
+
   // Load Unstaked NFTs
   const { data: ownedNfts } = useOwnedNFTs(nftCollection, address);
 
@@ -113,7 +151,81 @@ const Stake: NextPage = () => {
   const [stakedNfts, setStakedNfts] = useState<any[]>([]);
   const [claimableRewards, setClaimableRewards] = useState<BigNumber>();
 
+
   
+  useEffect(() => {
+    if (actorData) {
+      setActorNames(actorData);
+    }
+  }, [actorData]);
+
+  useEffect(() => {
+    if (paidData) {
+      setPaidNames(paidData);
+    }
+  }, [paidData]);
+
+  useEffect(() => {
+    if (countryData) {
+      setCountryNames(countryData);
+    }
+  }, [countryData]);
+
+  
+  useEffect(() => {
+    if (defensiveData) {
+      setDefensiveNames(defensiveData);
+    }
+  }, [defensiveData]);
+
+  useEffect(() => {
+    if (offensiveData) {
+      setOffensiveNames(offensiveData);
+    }
+  }, [offensiveData]);
+  
+  useEffect(() => {
+    if (equipmentData) {
+      setEquipmentNames(equipmentData);
+    }
+  }, [equipmentData]);
+
+  useEffect(() => {
+    if (singerData) {
+      setSingerNames(singerData);
+    }
+  }, [singerData]);
+  
+  useEffect(() => {
+    if (shopData) {
+      setShopNames(shopData);
+    }
+  }, [shopData]);
+
+  useEffect(() => {
+    if (levelData) {
+      setLevelNames(levelData);
+    }
+  }, [levelData]);
+
+  useEffect(() => {
+    if (gameData) {
+      setGameNames(gameData);
+    }
+  }, [gameData]);
+
+
+  useEffect(() => {
+    if (levelData) {
+      setLevelNames(levelData);
+    }
+  }, [levelData]);
+
+  useEffect(() => {
+    if (gameData) {
+      setGameNames(gameData);
+    }
+  }, [gameData]);
  
 
   useEffect(() => {
@@ -191,7 +303,7 @@ const Stake: NextPage = () => {
     );
   }
 
- 
+  
   
 
   async function stakeNft(id: string) {
@@ -326,7 +438,11 @@ const Stake: NextPage = () => {
             Claim Rewards 
           </Button>
          
-       
+          <Box  w='100%' style={{display: "flex", flexWrap: "wrap", marginBottom : "20px", borderRadius: "5px", background: "#1d2431", alignItems: "center", justifyContent: "center"}} >
+         </Box>
+         <Premium />
+         or
+         <Gold />
         </Box>
       </Box>
     </Center>
@@ -344,7 +460,7 @@ const Stake: NextPage = () => {
     <Tab>Your Staked NFTs</Tab>
   </TabList>
   <TabPanels>
-    <TabPanel className={css.maxH}>
+  <TabPanel className={css.maxH}>
 			<div className={css.stakingGrid}>
             {ownedNfts?.map((nft) => (
               <div className={css.nftStakeBox} key={nft.metadata.id.toString()}>
@@ -370,30 +486,99 @@ const Stake: NextPage = () => {
             ))}
 			</div>
     </TabPanel>
+
+
     <TabPanel className={css.maxH}>
 			<div className={css.stakingGrid}>
-            {stakedNfts?.map((nft) => (
-              <div className={css.nftStakeBox} key={nft.metadata.id.toString()}>
-                <ThirdwebNftMedia
-                  metadata={nft.metadata}
-                  className={css.nftStakeMedia}
-                />
-                <Button
-			w={'full'}
-            mt={'12px'}
-            bg={btnColor}
-			color={'white'}
-            rounded={'md'}
-            _hover={{
-              transform: 'translateY(-2px)',
-              boxShadow: 'lg',
-            }}
-                  onClick={() => withdraw(nft.metadata.id)}
-                >
-                  Withdraw
-                </Button>
-              </div>
-            ))}
+      {stakedNfts?.map((nft, index) => (
+  <div className={css.nftStakeBox} key={nft.metadata.id.toString()}>
+    <ThirdwebNftMedia
+      metadata={nft.metadata}
+      className={css.nftStakeMedia}
+      style={{marginBottom: "10px"}}
+    />
+    <Popover>
+  <PopoverTrigger>
+    <Button>Traits</Button>
+  </PopoverTrigger>
+    <PopoverContent>
+      <PopoverArrow />
+      <PopoverHeader>Your NFT traits</PopoverHeader>
+      <PopoverCloseButton />
+      <PopoverBody>
+        <Button style={{margin: "5px"}} colorScheme='blue'>{levelNames[index]}</Button>
+        <Button style={{margin: "5px"}}  colorScheme='blue'>{nft.metadata.name}</Button>
+        <Button style={{margin: "5px"}}  colorScheme='blue'>{gameNames[index]}</Button>
+        <Button style={{margin: "5px"}} colorScheme='blue'>{countryNames[index]}</Button>
+        <Button style={{margin: "5px"}}  colorScheme='blue'>{shopNames[index]}</Button>
+        <Button style={{margin: "5px"}}  colorScheme='blue'>{offensiveNames[index]}</Button>
+        <Button style={{margin: "5px"}} colorScheme='blue'>{defensiveNames[index]}</Button>
+        <Button style={{margin: "5px"}}  colorScheme='blue'>{singerNames[index]}</Button>
+        <Button style={{margin: "5px"}}  colorScheme='blue'>{equipmentNames[index]}</Button>
+        <Button style={{margin: "5px"}}  colorScheme='blue'>{actorNames[index]}</Button>
+        <PaidName key={nft.metadata.id} />
+      </PopoverBody>
+      <PopoverFooter>This is the footer</PopoverFooter>
+    </PopoverContent>
+</Popover>
+    <Button
+      w={'full'}
+      mt={'12px'}
+      bg={btnColor}
+      color={'white'}
+      rounded={'md'}
+      _hover={{
+        transform: 'translateY(-2px)',
+        boxShadow: 'lg',
+      }}
+      onClick={async () => {
+        withdraw(nft.metadata.id);
+        const levelNames = await contract.call("getStakedLevelNames", address);
+        setLevelNames(levelNames);
+
+        const actorNames = await contract.call("getStakedActorNames", address);
+        setActorNames(actorNames);
+
+        const countryNames = await contract.call("getStakedCountryNames", address);
+        setCountryNames(countryNames);
+
+        const paidNames = await contract.call("getStakedPaidNames", address);
+        setPaidNames(paidNames);
+
+
+        const defensiveNames = await contract.call("getStakedDefensiveNames", address);
+        setDefensiveNames(defensiveNames);
+
+        
+        // call the function to get staked token names
+        const offensiveNames = await contract.call("getStakedOffensiveNames", address);
+        setOffensiveNames(offensiveNames);
+
+        const equipmentNames = await contract.call("getStakedEquipmentNames", address);
+        setEquipmentNames(equipmentNames);
+
+        
+        // call the function to get staked token names
+        const singerNames = await contract.call("getStakedSingerNames", address);
+        setSingerNames(singerNames);
+
+    
+        // call the function to get staked token names
+        const shopNames = await contract.call("getStakedShopNames", address);
+        setShopNames(shopNames);
+
+
+        // call the function to get staked token names
+        const gameNames = await contract.call("getStakedGameNames", address);
+        setGameNames(gameNames);
+      }}
+    
+    >
+      Withdraw
+    </Button>
+  </div>
+))}
+
 			</div>
     </TabPanel>
   </TabPanels>
